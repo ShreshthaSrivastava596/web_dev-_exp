@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shrestha's Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-black: #000000;
+            --card-bg: rgba(20, 20, 20, 0.6);
+            --accent-blue: #0071e3;
+            --soft-blue: rgba(0, 113, 227, 0.3);
+            --text-white: #f5f5f7;
+            --text-gray: #86868b;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- UTILITIES --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 100px 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-blue);
+        }
+
+        /* --- HERO SECTION --- */
+        #home {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 80px;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards 0.2s;
+        }
+
+        .hero-text h2 {
+            font-size: 1.5rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards 0.4s;
+        }
+
+        .chips {
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards 0.6s;
+        }
+
+        .chip {
+            background: var(--soft-blue);
+            color: var(--accent-blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--accent-blue);
+        }
+
+        .hero-image {
+            position: relative;
+            width: 350px;
+            height: 350px;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-blue);
+            box-shadow: 0 0 30px var(--soft-blue);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- PROJECTS --- */
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(0, 113, 227, 0.2);
+            border-color: var(--accent-blue);
+        }
+
+        .project-img {
+            width: 100%;
+            height: 300px;
+            background: #1d1d1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        /* --- SKILLS --- */
+        .skills-glass-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 4rem;
+        }
+
+        .bubbles-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .bubble {
+            background: var(--accent-blue);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            animation: bubbleFloat 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes bubbleFloat {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+
+        .skills-category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-list-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        .skill-list-card h4 { color: var(--accent-blue); margin-bottom: 10px; }
+        .skill-list-card p { font-size: 0.9rem; color: var(--text-gray); }
+
+        /* --- ABOUT & EDUCATION --- */
+        .about-text {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            text-align: center;
+        }
+
+        .edu-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .edu-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        /* --- CONTACT --- */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: var(--soft-blue);
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px var(--accent-blue);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+        
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px var(--soft-blue);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--accent-blue), #00d4ff);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px var(--soft-blue);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #home { flex-direction: column-reverse; text-align: center; }
+            .hero-image { width: 250px; height: 250px; margin-bottom: 2rem; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .chips { justify-content: center; }
+            .nav-links { gap: 1rem; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-content">
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="container">
+        <div class="hero-text">
+            <h1>Hi, I'm Shrestha Srivastava</h1>
+            <h2>Computer Science Student | Frontend Developer | Tech Enthusiast</h2>
+            <div class="chips">
+                <span class="chip">Student Developer</span>
+                <span class="chip">Frontend Enthusiast</span>
+                <span class="chip">Problem Solver</span>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img class="profile-img" style="background: url('https://via.placeholder.com/350x350/111/0071e3?text=Profile') center/cover;" src="spic.png"> 
+        </div>
+    </section>
+
+    <section id="projects" class="container reveal">
+        <h2 class="section-title">Selected Projects</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <img class="project-img" src="swiftcom.png"> 
+                <div class="project-info">
+                    <h3>SwiftCommerce</h3>
+                    <p>A high-performance landing page for a fictional tech gadget using CSS Grid and Flexbox.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img class="project-img" src="squiz.png">
+                <div class="project-info">
+                    <h3>AlgoQuiz</h3>
+                    <p>Interactive Data Structures quiz application built with Vanilla JavaScript and local storage.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img class="project-img"  src="skycast.png">
+                <div class="project-info">
+                    <h3>SkyCast</h3>
+                    <p>Real-time weather application fetching data from OpenWeather API with dynamic backgrounds.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="container reveal">
+        <h2 class="section-title">Skills That Power My Work</h2>
+        
+        <div class="skills-glass-box">
+            <div class="bubbles-container">
+                <div class="bubble" style="animation-delay: 0s;">Git</div>
+                <div class="bubble" style="animation-delay: 0.2s;">HTML</div>
+                <div class="bubble" style="animation-delay: 0.4s;">CSS</div>
+                <div class="bubble" style="animation-delay: 0.1s;">JavaScript</div>
+                <div class="bubble" style="animation-delay: 0.5s;">C++</div>
+                <div class="bubble" style="animation-delay: 0.3s;">Java</div>
+                <div class="bubble" style="animation-delay: 0.6s;">MongoDB</div>
+            </div>
+        </div>
+
+        <div class="skills-category-grid">
+            <div class="skill-list-card">
+                <h4>Programming</h4>
+                <p>Python, C, C++, Java</p>
+            </div>
+            <div class="skill-list-card">
+                <h4>Web Tech</h4>
+                <p>HTML5, CSS3, JavaScript (ES6+)</p>
+            </div>
+            <div class="skill-list-card">
+                <h4>Database</h4>
+                <p>MySQL, MongoDB, Git</p>
+            </div>
+            <div class="skill-list-card">
+                <h4>Core Concepts</h4>
+                <p>DSA, Machine Learning, YOLO</p>
+            </div>
+            <div class="skill-list-card">
+                <h4>Soft Skills</h4>
+                <p>Teamwork, Problem Solving</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="container reveal">
+        <h2 class="section-title">About Me</h2>
+        <p class="about-text">
+            I am a highly motivated Computer Science student with a passion for building clean, user-centric interfaces. I thrive at the intersection of logic and design, constantly pushing myself to learn new technologies and solve complex architectural challenges.
+        </p>
+        
+        <div class="edu-timeline">
+            <div class="edu-card reveal">
+                <h3>B.Tech in Computer Science Engineering</h3>
+                <p>ABES Engineering College, Ghaziabad</p>
+                <p><strong>1st Year (Pursuing)</strong> | CGPA: 9.0 | 2025 – 2029</p>
+            </div>
+            <div class="edu-card reveal">
+                <h3>Higher Secondary Education (12th Grade)</h3>
+                <p>Saint Mary's Convent School</p>
+                <p><strong>Percentage: 85%</strong> | Completed in 2024</p>
+            </div>
+            <div class="edu-card reveal">
+                <h3>Secondary Education (10th Grade)</h3>
+                <p>Saint Mary's Convent School</p>
+                <p>Completed in 2022</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container reveal">
+        <h2 class="section-title">Let's Connect & Collaborate 💙</h2>
+        <p style="text-align: center; margin-bottom: 2rem; color: var(--text-gray);">Currently looking for summer internships and open-source projects.</p>
+        
+        <div class="social-links">
+            <a href="#" class="social-icon">GH</a>
+            <a href="#" class="social-icon">IN</a>
+            <a href="#" class="social-icon">EM</a>
+            <a href="#" class="social-icon">WA</a>
+            <a href="#" class="social-icon">IG</a>
+            <a href="#" class="social-icon">FB</a>
+        </div>
+
+        <div class="contact-form">
+            <div class="form-group">
+                <input type="text" placeholder="Your Name">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Subject">
+            </div>
+            <div class="form-group">
+                <textarea rows="5" placeholder="Your Message"></textarea>
+            </div>
+            <button class="submit-btn">Send Message</button>
+        </div>
+    </section>
+
+    <footer class="reveal">
+        <p>© 2026 | Shrestha Srivastava </p>
+    </footer>
+
+    <script>
+        // 1. SCROLL REVEAL ANIMATION (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 2. NAV HIGHLIGHT ON SCROLL
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        // 3. SMOOTH SCROLL
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
